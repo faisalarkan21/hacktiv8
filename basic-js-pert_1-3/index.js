@@ -1,12 +1,12 @@
 const UsersEntity = require("./utils/entity/users");
 const PostsEntity = require("./utils/entity/posts");
-const UsersMock = require('../basic-js-pert_1-3/utils/dummy-data/user');
+const UsersMock = require('./utils/dummy-data/user');
 
 const instanceUserEntity = new UsersEntity();
 const instancePostsEntity = new PostsEntity();
 
 instanceUserEntity.getUsers().then(data => {
-    // console.log("data", data);
+    console.log("data", data);
 });
 
 instanceUserEntity.postAddUser(UsersMock).then(data => {

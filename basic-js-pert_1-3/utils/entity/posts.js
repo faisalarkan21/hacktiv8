@@ -9,7 +9,7 @@ class PostsEntity extends Services {
     return this.get(`/posts/${id}`);
   }
 
-  getPosts() {
+  getExplore() {
     return this.get("/explore");
   }
 }

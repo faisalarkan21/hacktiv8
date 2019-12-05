@@ -1,6 +1,6 @@
 const UsersEntity = require("./utils/entity/users");
 const PostsEntity = require("./utils/entity/posts");
-const UsersMock = require("../basic-js/utils/dummy-data/user");
+const UsersMock = require('../basic-js-pert_1-3/utils/dummy-data/user');
 
 const instanceUserEntity = new UsersEntity();
 const instancePostsEntity = new PostsEntity();
@@ -10,11 +10,11 @@ instanceUserEntity.getUsers().then(data => {
 });
 
 instanceUserEntity.postAddUser(UsersMock).then(data => {
-//   console.log(data);
+  console.log(data);
 });
 
 instanceUserEntity.getDetailUser(41).then(data => {
-  //   console.log("data", data);
+    // console.log("data", data);
 });
 
 instancePostsEntity.getPosts().then(data => {

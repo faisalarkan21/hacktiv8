@@ -2,7 +2,7 @@ import React from "react";
 import { Modal } from "antd";
 
 export const ConfirmModal = props => {
-  console.log("props modal", props);
+  
   /**
    * @TODO
    * visible -> props.visible

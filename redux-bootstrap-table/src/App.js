@@ -2,6 +2,7 @@ import "antd/dist/antd.css";
 import axios from "axios";
 import React from "react";
 import { ConfirmModal } from "./components/modal-confirm";
+import { Services } from "./utils/api";
 
 class App extends React.Component {
   constructor(props) {
@@ -14,36 +15,45 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    console.log("sas");
-    axios
-      .get("https://5d60ae24c2ca490014b27087.mockapi.io/api/v1/users")
-      .then(({ data }) => {
-        this.setState({
-          data
-        });
+    const api = new Services();
+    api.get("users").then((data) => {
+      console.log('data', data)
+      this.setState({
+        data
       });
+    });
   }
 
-  handleToggle = name => {
+  handleToggle = (name, v) => {
+    // console.log('i', i)
     this.setState({ [name]: !this.state[name] });
   };
 
   handleNonValidURL = value => {
-    const patt = new RegExp(
-      /^(ftp|http|https):\/\/[^ "]+$/
-    );
+    const patt = new RegExp(/^(ftp|http|https):\/\/[^ "]+$/);
+
+    console.log("value handleNonValidURL", patt.test(value));
 
     if (patt.test(value)) {
       return <img width={150} height={150} src={value}></img>;
     } else {
-      return <img width={150} height={150} src={"http://www.dpbatour.com/img/profile_none.png"}></img>;
+      return (
+        <img
+          width={150}
+          height={150}
+          src={"http://www.dpbatour.com/img/profile_none.png"}
+        ></img>
+      );
     }
   };
 
-  handleOkDelete = () => {};
+  handleOkDelete = () => {
+
+    // console.log('kena')
+
+  };
 
   render() {
-    console.log(this.state);
     return (
       <div className="App">
         <ConfirmModal
@@ -55,10 +65,8 @@ class App extends React.Component {
           Yakin mau hapus user tersebut ?
         </ConfirmModal>
 
-        <div  className="col-md-5">
-          <table
-            className="table table-striped table-hover "
-          >
+        <div className="col-md-5">
+          <table className="table table-striped table-hover ">
             <thead>
               <tr>
                 <th scope="col">Name</th>
@@ -69,19 +77,16 @@ class App extends React.Component {
               </tr>
             </thead>
             <tbody>
-              {this.state.data.map(v => {
+              {this.state.data.map((v, i) => {
                 return (
                   <tr>
                     <td>{v.name}</td>
-                    <td>
-                      {this.handleNonValidURL(v.avatar)}
-                      
-                    </td>
+                    <td>{this.handleNonValidURL(v.avatar)}</td>
                     <td>{v.email}</td>
                     <td>{v.cash}</td>
                     <td>
                       <button
-                        onClick={() => this.handleToggle("modalDelete")}
+                        onClick={() => this.handleToggle("modalDelete", v)}
                         className="btn btn-danger"
                       >
                         Delete

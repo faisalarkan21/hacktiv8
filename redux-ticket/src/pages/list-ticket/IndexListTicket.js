@@ -1,4 +1,5 @@
 import React from "react";
+import { Skeleton } from "antd";
 import {
   List,
   Avatar,
@@ -12,7 +13,9 @@ import {
   Form,
   Input
 } from "antd";
-var numeral = require('numeral');
+import { connect } from "react-redux";
+import { getTicketThunk, getTicket } from "../../action/ticket";
+var numeral = require("numeral");
 const { Option } = Select;
 
 const listData = [
@@ -27,7 +30,8 @@ const listData = [
     description:
       "Ant Design, a design language for background applications, is refined by Ant UED Team.",
     content:
-      "We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently."
+      "We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.",
+    id: "xa9NYKD",
   },
   {
     href: "http://ant.design",
@@ -40,8 +44,9 @@ const listData = [
     description:
       "Ant Design, a design language for background applications, is refined by Ant UED Team.",
     content:
-      "We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently."
-  },
+      "We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.",
+      id: "UqC-YUY"
+    },
   {
     href: "http://ant.design",
     title: `Konser Slank`,
@@ -53,7 +58,8 @@ const listData = [
     description:
       "Ant Design, a design language for background applications, is refined by Ant UED Team.",
     content:
-      "We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently."
+      "We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.",
+    id: "BXn9HsR",
   },
   {
     href: "http://ant.design",
@@ -66,7 +72,8 @@ const listData = [
     description:
       "Ant Design, a design language for background applications, is refined by Ant UED Team.",
     content:
-      "We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently."
+      "We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.",
+    id: "YaIp-NG"
   }
 ];
 
@@ -86,6 +93,11 @@ class ListTicket extends React.Component {
       totalTiket: "",
       modalVisibleBuy: false
     };
+  }
+
+  componentDidMount() {
+    // console.log('this.props', this.props)
+    this.props.dispatch(getTicketThunk());
   }
 
   handleChangeInputNumber = value => {
@@ -121,13 +133,34 @@ class ListTicket extends React.Component {
       chooseHargaTiketLabel
     } = this.state;
 
-    // let stageA = 'stageA'
-    console.log(
-      "TEST",
-      ` hargaHargaTiket${chooseHargaTiketValue}`,
-      this.state["hargaHargaTiket" + chooseHargaTiketValue]
-    );
-    console.log("test", this.state[`hargaHargaTiket${chooseHargaTiketValue}`]);
+    const { getTickets } = this.props;
+
+    if (!getTickets.data.length) {
+      return (
+        <div>
+          <Row style={{ marginTop: 50 }}>
+            <Col offset={5} span={10}>
+              <Skeleton />
+            </Col>
+          </Row>
+          <Row>
+            <Col offset={5} span={10}>
+              <Skeleton />
+            </Col>
+          </Row>
+          <Row>
+            <Col offset={5} span={10}>
+              <Skeleton />
+            </Col>
+          </Row>
+          <Row>
+            <Col offset={5} span={10}>
+              <Skeleton />
+            </Col>
+          </Row>
+        </div>
+      );
+    }
 
     return (
       <div>
@@ -181,9 +214,9 @@ class ListTicket extends React.Component {
                     defaultValue={0}
                     disabled
                     addonBefore="Rp. "
-                    value={
-                      numeral(this.state[`hargaHargaTiket${chooseHargaTiketValue}`]).format('0,0.00')
-                    }
+                    value={numeral(
+                      this.state[`hargaHargaTiket${chooseHargaTiketValue}`]
+                    ).format("0,0.00")}
                     onChange={this.handleChangeInputNumber}
                   ></Input>
                 </Form.Item>
@@ -200,11 +233,10 @@ class ListTicket extends React.Component {
                     width={100}
                     disabled
                     addonBefore="Rp. "
-                    value={
-                      numeral(
+                    value={numeral(
                       totalTiket *
-                      this.state[`hargaHargaTiket${chooseHargaTiketValue}`]).format('0,0.00')
-                    }
+                        this.state[`hargaHargaTiket${chooseHargaTiketValue}`]
+                    ).format("0,0.00")}
                     onChange={this.handleChangeInputNumber}
                   ></Input>
                 </Form.Item>
@@ -218,7 +250,7 @@ class ListTicket extends React.Component {
               <List
                 itemLayout="vertical"
                 size="large"
-                dataSource={listData}
+                dataSource={getTickets.data}
                 footer={
                   <div>
                     <b>Hacktiv8</b> 2019
@@ -265,4 +297,10 @@ class ListTicket extends React.Component {
   }
 }
 
-export default ListTicket;
+function mapStateToProps(state) {
+  return {
+    getTickets: state.getTickets
+  };
+}
+
+export default connect(mapStateToProps)(ListTicket);

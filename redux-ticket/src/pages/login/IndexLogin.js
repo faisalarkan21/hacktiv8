@@ -8,7 +8,6 @@ import { postLogin } from "../../action/auth";
 
 class Login extends React.Component {
   handleLogin = () => {
-    console.log("props", this.props);
     this.props.history.push('/list-ticket')
   };
 

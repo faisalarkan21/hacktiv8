@@ -45,8 +45,8 @@ const listData = [
       "Ant Design, a design language for background applications, is refined by Ant UED Team.",
     content:
       "We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.",
-      id: "UqC-YUY"
-    },
+    id: "UqC-YUY"
+  },
   {
     href: "http://ant.design",
     title: `Konser Slank`,
@@ -88,6 +88,7 @@ class ListTicket extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      selectedTicket: '',
       hargaHargaTiket: "",
       chooseHargaTiketValue: "",
       totalTiket: "",
@@ -114,15 +115,49 @@ class ListTicket extends React.Component {
     });
   };
 
-  handleOpenModal = () => {
+  handleOpenModal = (item) => {
+    // console.log('item', item)
+
+    /**
+     * Set Item into state -> selectedTicket
+     */
+
     this.setState(prevState => ({
       modalVisibleBuy: !prevState.modalVisibleBuy
     }));
   };
 
-  handleOnOk = () => {};
+  handleOnOk = () => { };
 
-  handleOnCancel = () => {};
+  handleOnCancel = () => { };
+
+  handleSubmitTicket = () => {
+
+
+
+    // const constructData = {
+
+    //   type: 'stageA',
+    //   img: 'https://ecs7.tokopedia.net/img/banner/2019/12/12/22166894/22166894_fb8e3d78-f2eb-4a0a-adfa-27ef57d5ee5f.jpg',
+    //   amount: 10000000,
+    //   countTicket: 3,
+    //   total: 30000000,
+    //   id: 'BXn9HsR'
+
+    // }
+
+
+    // this.props.dispatch(
+
+    //   /**
+    //    * Ke action yg sebelumnya dibuat
+    //    */
+
+    // )
+    this.handleOpenModal();
+    this.props.history.push('/profile')
+
+  }
 
   render() {
     const {
@@ -132,6 +167,8 @@ class ListTicket extends React.Component {
       chooseHargaTiketValue,
       chooseHargaTiketLabel
     } = this.state;
+
+    console.log('props', this.props)
 
     const { getTickets } = this.props;
 
@@ -167,7 +204,7 @@ class ListTicket extends React.Component {
         <Modal
           title={"Buy Ticket"}
           visible={modalVisibleBuy}
-          onOk={this.handleOnOk}
+          onOk={this.handleSubmitTicket}
           onCancel={this.handleOpenModal}
         >
           <Row>
@@ -235,7 +272,7 @@ class ListTicket extends React.Component {
                     addonBefore="Rp. "
                     value={numeral(
                       totalTiket *
-                        this.state[`hargaHargaTiket${chooseHargaTiketValue}`]
+                      this.state[`hargaHargaTiket${chooseHargaTiketValue}`]
                     ).format("0,0.00")}
                     onChange={this.handleChangeInputNumber}
                   ></Input>
@@ -272,7 +309,7 @@ class ListTicket extends React.Component {
                       />,
                       <Button
                         size={"small"}
-                        onClick={this.handleOpenModal}
+                        onClick={() => this.handleOpenModal(item)}
                         type="primary"
                       >
                         Buy
